@@ -3,6 +3,9 @@ What issues will you address by cleaning the data?
 2. In sales_by_sku table: Remove 8 rows contain SKUs not on the products table.
 3. After removing unknown SKUs, sales_by_sku table is identical to the first two columns from sales_report table. Drop sales_by_sku
 4. In analytics table: Delete duplicate rows
+5. In analytics table: userid column only has NULL values. Delete this column
+6. In analytics table convert revenue and unit price to dollars.
+7. In analytics table: units_sold, bounces and revenue column change NULL values to 0. 
 
 
 
@@ -23,14 +26,32 @@ SET sentimentmagnitude =
 CREATE TABLE sales_by_sku_clean AS (
 	SELECT *
 	FROM sales_by_sku
-	WHERE productsku IN (SELECT sku FROM products_clean)
+	WHERE productsku IN (SELECT sku FROM products_clean);
 )
 
 3.
-DROP TABLE sales_by_sku_clean
+DROP TABLE sales_by_sku_clean;
 
 4.
-CREATE TABLE analytics_clean AS (SELECT DISTINCT * FROM analytics)
+CREATE TABLE analytics_clean AS (SELECT DISTINCT * FROM analytics);
 
 5.
+ALTER TABLE analytics_clean
+DROP COLUMN userid;
 
+6.
+UPDATE analytics_clean SET
+	unit_price = (unit_price/1000000),
+	revenue = (revenue/1000000);
+
+7.
+UPDATE analytics_clean SET units_sold = 0
+WHERE units_sold IS NULL;
+
+UPDATE analytics_clean SET
+	bounces = 0
+	WHERE bounces IS NULL;
+
+UPDATE analytics_clean SET
+	revenue = 0
+	WHERE revenue IS NULL;
