@@ -1,7 +1,7 @@
 # Final-Project-Transforming-and-Analyzing-Data-with-SQL
 
 ## Project/Goals
-(fill in your description and goals here)
+In this project, I will be cleaning the data tables and preparing them for analysis. Once they are ready for use, I will perform some statistical analysis to identify patterns and trends in the data. I will also include a QA process to ensure the results of my analysis are accurate.
 
 ## Process
 ### (your step 1)
