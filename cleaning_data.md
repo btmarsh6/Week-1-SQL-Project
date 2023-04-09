@@ -4,8 +4,10 @@ What issues will you address by cleaning the data?
 3. After removing unknown SKUs, sales_by_sku table is identical to the first two columns from sales_report table. Drop sales_by_sku
 4. In analytics table: Delete duplicate rows
 5. In analytics table: userid column only has NULL values. Delete this column
-6. In analytics table convert revenue and unit price to dollars.
+6. In analytics table: Convert revenue and unit price to dollars.
 7. In analytics table: units_sold, bounces and revenue column change NULL values to 0. 
+8. In all_sessions table: productrefundamount, itemquantity, itemrevenue, and searchkeyword columns are all NULL. The currencycode is only USD. Delete these columns.
+9. in all_sessions table: Convert totaltransactionrevenue, productprice, productrevenue, transactionrevenue to dollars
 
 
 
@@ -55,3 +57,18 @@ UPDATE analytics_clean SET
 UPDATE analytics_clean SET
 	revenue = 0
 	WHERE revenue IS NULL;
+
+8.
+ALTER TABLE all_sessions_clean
+	DROP COLUMN productrefundamount,
+	DROP COLUMN itemquantity,
+	DROP COLUMN itemrevenue,
+    DROP COLUMN searchkeyword,
+    DROP COLUMN currencycode
+
+9.
+UPDATE all_sessions_clean SET
+	totaltransactionrevenue = totaltransactionrevenue/1000000,
+	productprice = productprice/1000000,
+	productrevenue = productrevenue/1000000,
+	transactionrevenue = transactionrevenue/1000000

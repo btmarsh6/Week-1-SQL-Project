@@ -5,10 +5,26 @@ Answer the following questions and provide the SQL queries used to find the answ
 
 
 SQL Queries:
+SELECT city,
+		SUM(totaltransactionrevenue)
+FROM all_sessions_clean
+WHERE totaltransactionrevenue IS NOT NULL AND 
+CITY != 'not available in demo dataset'
+GROUP BY city
+ORDER BY SUM(totaltransactionrevenue) DESC;
 
+SELECT country,
+		SUM(totaltransactionrevenue)
+FROM all_sessions_clean
+WHERE totaltransactionrevenue IS NOT NULL
+GROUP BY country
+ORDER BY SUM(totaltransactionrevenue) DESC
+LIMIT 1;
 
 
 Answer:
+City: San Francisco - $1,564.32
+Country: United States - $13,154.17
 
 
 
