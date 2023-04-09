@@ -7,7 +7,8 @@ What issues will you address by cleaning the data?
 6. In analytics table: Convert revenue and unit price to dollars.
 7. In analytics table: units_sold, bounces and revenue column change NULL values to 0. 
 8. In all_sessions table: productrefundamount, itemquantity, itemrevenue, and searchkeyword columns are all NULL. The currencycode is only USD. Delete these columns.
-9. in all_sessions table: Convert totaltransactionrevenue, productprice, productrevenue, transactionrevenue to dollars
+9. In all_sessions table: Convert totaltransactionrevenue, productprice, productrevenue, transactionrevenue to dollars
+10. In all_sessions table: 24 rows have no country and 8656 rows have no city. Change all these values to 'unknown'
 
 
 
@@ -64,11 +65,21 @@ ALTER TABLE all_sessions_clean
 	DROP COLUMN itemquantity,
 	DROP COLUMN itemrevenue,
     DROP COLUMN searchkeyword,
-    DROP COLUMN currencycode
+    DROP COLUMN currencycode;
 
 9.
 UPDATE all_sessions_clean SET
 	totaltransactionrevenue = totaltransactionrevenue/1000000,
 	productprice = productprice/1000000,
 	productrevenue = productrevenue/1000000,
-	transactionrevenue = transactionrevenue/1000000
+	transactionrevenue = transactionrevenue/1000000;
+
+10.
+UPDATE all_sessions_clean
+SET country = 'unknown'
+WHERE country = '(not set)';
+
+UPDATE all_sessions_clean
+SET city = 'unknown'
+WHERE city = '(not set)'
+OR city = 'not available in demo dataset';

@@ -9,9 +9,10 @@ SELECT city,
 		SUM(totaltransactionrevenue)
 FROM all_sessions_clean
 WHERE totaltransactionrevenue IS NOT NULL AND 
-CITY != 'not available in demo dataset'
+CITY != 'unknown'
 GROUP BY city
-ORDER BY SUM(totaltransactionrevenue) DESC;
+ORDER BY SUM(totaltransactionrevenue) DESC
+LIMIT 3;
 
 SELECT country,
 		SUM(totaltransactionrevenue)
@@ -19,13 +20,19 @@ FROM all_sessions_clean
 WHERE totaltransactionrevenue IS NOT NULL
 GROUP BY country
 ORDER BY SUM(totaltransactionrevenue) DESC
-LIMIT 1;
+LIMIT 3;
 
 
 Answer:
-City: San Francisco - $1,564.32
-Country: United States - $13,154.17
+City:
+[San Francisco, 1564.32
+ Sunnyvale,     992.23
+ Atlanta,       854.44]
 
+Country:
+[United States, 13154.17
+Israel,         602
+Australia,      358]
 
 
 
@@ -33,7 +40,38 @@ Country: United States - $13,154.17
 
 
 SQL Queries:
+WITH unit_sales AS (
+	SELECT	fullvisitorid,
+			city,
+			country,
+			SUM(units_sold) AS productTotal
+	FROM all_sessions_clean AS al
+	INNER JOIN analytics_clean AS an USING(fullvisitorid)
+	GROUP BY fullvisitorid, city, country
+	ORDER BY producttotal DESC
+)
 
+SELECT city, ROUND(AVG(producttotal), 2)
+FROM unit_sales
+GROUP BY city
+ORDER by city;
+
+
+WITH unit_sales AS (
+	SELECT	fullvisitorid,
+			city,
+			country,
+			SUM(units_sold) AS productTotal
+	FROM all_sessions_clean AS al
+	INNER JOIN analytics_clean AS an USING(fullvisitorid)
+	GROUP BY fullvisitorid, city, country
+	ORDER BY producttotal DESC
+)
+
+SELECT country, ROUND(AVG(producttotal), 2) AS averageunitssold
+FROM unit_sales
+GROUP BY country
+ORDER by country;
 
 
 Answer:
