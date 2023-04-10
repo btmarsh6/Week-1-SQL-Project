@@ -27,4 +27,45 @@ GROUP BY country
 ORDER BY MAX(totaltransactionrevenue) DESC;
 ```
 
+For question 2. I confirmed that all visitors that appear on both the analytics and all sessions tables have their cities/countries represented in the answer.
 
+```SQL
+SELECT	COUNT(DISTINCT city) AS cities,
+		COUNT(DISTINCT country) AS countries
+FROM all_sessions_clean
+INNER JOIN analytics_clean USING(fullvisitorid)
+```
+
+For question 3. I checked overall top selling categories to see if anything stood out as contradicting my answer. It confirmed apparel was by far the biggest seller.
+
+```SQL
+SELECT 	v2productcategory,
+		COUNT(*) AS frequency
+FROM all_sessions_clean
+GROUP BY v2productcategory
+ORDER BY frequency DESC
+```
+
+
+For question 4, I tried to check my work by comparing what I found with the skus and order totals from the sales report table. 
+
+```SQL
+WITH sold_items AS (
+	SELECT 	fullvisitorid,
+			city,
+			country,
+			v2productname,
+			productsku,
+			units_sold
+	FROM all_sessions_clean
+	INNER JOIN analytics_clean USING(fullvisitorid)
+	WHERE units_sold >= 1
+	ORDER BY city, v2productname
+	)
+	
+SELECT	productsku,
+		SUM(units_sold)
+FROM sold_items
+GROUP BY productsku
+ORDER BY productSKU
+```

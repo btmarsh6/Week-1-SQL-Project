@@ -1,4 +1,4 @@
-Question 1: Is there any correlation between time on site or page views and untis sold?
+**Question 1: Is there any correlation between time on site or page views and untis sold?**
 
 SQL Queries:
 ```SQL
@@ -22,7 +22,7 @@ Both time on site and number of page views have very weak correlation with numbe
 ![Alt text](q2-1.png)
 
 
-Question 2: Is there any pattern to what days of the week or times of year get the most web traffic?
+**Question 2: Is there any pattern to what days of the week or times of year get the most web traffic?**
 
 SQL Queries:
 ``` SQL
@@ -75,7 +75,7 @@ The month with the most visits is August with over twice as many visits as Octob
 ![Alt text](q2-2_months.png)
 
 
-Question 3: What percentage of the site traffic is repeat visitors? 
+**Question 3: What percentage of the site traffic is repeat visitors?**
 
 SQL Queries: 
 ```SQL
@@ -101,17 +101,3 @@ SELECT (SELECT COUNT(*) FROM repeat_visitors) AS repeat,
 
 Answer:
 Repeat visitors make up 1.89% of traffic.
-
-Question 4: 
-
-SQL Queries:
-
-Answer:
-
-
-
-Question 5: 
-
-SQL Queries:
-
-Answer:
