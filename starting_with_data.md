@@ -17,6 +17,7 @@ FROM time_and_views
 Answer: 
 Both time on site and number of page views have very weak correlation with number of units sold per visit. Page views has a slightly higher coefficient at 0.14, but it is still too weak to be considered a major factor in whether or not a sale is made.
 
+![Alt text](q2-1.png)
 
 
 Question 2: Is there any pattern to what days of the week or times of year get the most web traffic?
@@ -65,6 +66,10 @@ Answer:
 Weekdays get over 50% more traffic than weekends. Saturdays have the fewest visits and Wednesdays have the most.
 The month with the most visits is August with over twice as many visits as October, the month with the least traffic. September and August stick out as having significantly more traffic than the other months. With only one year's data, it is difficult to generalize this pattern beyond the given year.
 
+![Alt text](q2-2_days.png)
+
+![Alt text](q2-2_months.png)
+
 
 Question 3: What percentage of the site traffic is repeat visitors? 
 
@@ -91,6 +96,7 @@ SELECT (SELECT COUNT(*) FROM repeat_visitors) AS repeat,
 Answer:
 Repeat visitors make up 1.89% of traffic.
 
+![Alt text](q2-3.png)
 
 Question 4: 
 
