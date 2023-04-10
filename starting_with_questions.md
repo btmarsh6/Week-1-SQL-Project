@@ -168,7 +168,36 @@ SELECT *, RANK() OVER(
 FROM city_items
 ORDER BY rank, v2productname
 
+# Country level
+WITH sold_items AS (
+	SELECT 	fullvisitorid,
+			city,
+			country,
+			v2productname,
+			units_sold
+	FROM all_sessions_clean
+	INNER JOIN analytics_clean USING(fullvisitorid)
+	WHERE units_sold >= 1
+	ORDER BY city, v2productname
+	),
 
+country_items AS (
+	SELECT 	country,
+			v2productname,
+			SUM(units_sold) AS total_units
+	FROM sold_items
+	GROUP BY country, v2productname
+	HAVING SUM(units_sold) > 3
+	ORDER BY country, SUM(units_sold) DESC
+	)
+	
+-- View top selling item in each country.
+SELECT *, RANK() OVER(
+	PARTITION BY country
+	ORDER BY total_units DESC
+)
+FROM country_items
+ORDER BY rank, v2productname
 
 Answer:
 Many cities' top selling item was a Google branded item. YouTUbe branded items were also popular as well as Nest equipment.
