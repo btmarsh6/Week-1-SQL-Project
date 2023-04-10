@@ -5,6 +5,7 @@ Answer the following questions and provide the SQL queries used to find the answ
 
 
 SQL Queries:
+```SQL
 SELECT city,
 		SUM(totaltransactionrevenue)
 FROM all_sessions_clean
@@ -21,26 +22,21 @@ WHERE totaltransactionrevenue IS NOT NULL
 GROUP BY country
 ORDER BY SUM(totaltransactionrevenue) DESC
 LIMIT 3;
-
+```
 
 Answer:
-City:
-[San Francisco, 1564.32
- Sunnyvale,     992.23
- Atlanta,       854.44]
 
-Country:
-[United States, 13154.17
-Israel,         602
-Australia,      358]
+![Alt text](q1-1_cities.png)
 
+![Alt text](q1-1_countries.png)
 
 
 **Question 2: What is the average number of products ordered from visitors in each city and country?**
 
 
 SQL Queries:
-# City level data
+```SQL
+-- City level data
 WITH unit_sales AS (
 	SELECT	fullvisitorid,
 			city,
@@ -52,12 +48,12 @@ WITH unit_sales AS (
 	ORDER BY producttotal DESC
 )
 
-SELECT city, ROUND(AVG(producttotal), 2)
+SELECT city, ROUND(AVG(producttotal), 2) AS averageunitssold
 FROM unit_sales
 GROUP BY city
 ORDER by city;
 
-# Country level data
+-- Country level data
 WITH unit_sales AS (
 	SELECT	fullvisitorid,
 			city,
@@ -73,10 +69,12 @@ SELECT country, ROUND(AVG(producttotal), 2) AS averageunitssold
 FROM unit_sales
 GROUP BY country
 ORDER by country;
-
+```
 
 Answer:
+The majority of cities had no sales. Among cities with sales, the average ranged from .06 items in Dublin to 136.11 items in San Bruno. San Bruno and Charlotte were outliers significantly higher than all other cities, most of which were under 10 items.
 
+By country, again fewer than half had any sales. The US sold the most number of products, averaging 28.45 items per visitor. The next closest was Czechia with 4.9 items per visitor. 
 
 
 
@@ -85,7 +83,8 @@ Answer:
 
 
 SQL Queries:
-# Country level data
+```SQL
+-- Country level data
 WITH sold_categories AS (
 	SELECT 	fullvisitorid,
 			city,
@@ -105,7 +104,7 @@ GROUP BY country, v2productcategory
 HAVING COUNT(*) > 3
 ORDER BY country, COUNT(*) DESC;
 
-# City level data
+-- City level data
 WITH sold_categories AS (
 	SELECT 	fullvisitorid,
 			city,
@@ -124,20 +123,19 @@ FROM sold_categories
 GROUP BY city, v2productcategory
 HAVING COUNT(*) > 3
 ORDER BY city, COUNT(*) DESC;
-
+```
 Answer:
 For many countries, Apparel was the most ordered category. In Hong Kong, Accesories were the top selling category. Other popular categories include Bags and Notebooks & Journals. The US, having the most sales in general, also had the largest assortment of categories.
 
 At the city level, Apparel again appeared popular in many cities. Electronics also ranked highly particularly among US cities and also Cambridge.
 
 
-
-
 **Question 4: What is the top-selling product from each city/country? Can we find any pattern worthy of noting in the products sold?**
 
 
 SQL Queries:
-# City level
+```SQL
+-- City level
 WITH sold_items AS (
 	SELECT 	fullvisitorid,
 			city,
@@ -168,7 +166,7 @@ SELECT *, RANK() OVER(
 FROM city_items
 ORDER BY rank, v2productname
 
-# Country level
+-- Country level
 WITH sold_items AS (
 	SELECT 	fullvisitorid,
 			city,
@@ -198,7 +196,7 @@ SELECT *, RANK() OVER(
 )
 FROM country_items
 ORDER BY rank, v2productname
-
+```
 Answer:
 Many cities' top selling item was a Google branded item. YouTUbe branded items were also popular as well as Nest equipment.
 
@@ -210,7 +208,22 @@ At the country level, Google and YouTube branded items also topped multiple coun
 **Question 5: Can we summarize the impact of revenue generated from each city/country?**
 
 SQL Queries:
+```SQL
+SELECT city,
+		SUM(totaltransactionrevenue)
+FROM all_sessions_clean
+WHERE totaltransactionrevenue IS NOT NULL AND 
+CITY != 'unknown'
+GROUP BY city
+ORDER BY SUM(totaltransactionrevenue) DESC;
 
+SELECT country,
+		SUM(totaltransactionrevenue)
+FROM all_sessions_clean
+WHERE totaltransactionrevenue IS NOT NULL
+GROUP BY country
+ORDER BY SUM(totaltransactionrevenue) DESC;
+```
 
 
 Answer:

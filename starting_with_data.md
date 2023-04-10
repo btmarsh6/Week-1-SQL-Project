@@ -1,6 +1,7 @@
 Question 1: Is there any correlation between time on site or page views and untis sold?
 
 SQL Queries:
+```SQL
 WITH time_and_views AS (
 	SELECT	visitid,
 			timeonsite,
@@ -13,6 +14,7 @@ WITH time_and_views AS (
 SELECT 	CORR(timeonsite, totalUnitsSold) AS timeCorr,
 		CORR(pageviews, totalUnitsSold) AS viewsCorr
 FROM time_and_views 
+```
 
 Answer: 
 Both time on site and number of page views have very weak correlation with number of units sold per visit. Page views has a slightly higher coefficient at 0.14, but it is still too weak to be considered a major factor in whether or not a sale is made.
@@ -23,7 +25,8 @@ Both time on site and number of page views have very weak correlation with numbe
 Question 2: Is there any pattern to what days of the week or times of year get the most web traffic?
 
 SQL Queries:
-# Visits by day
+``` SQL
+-- Visits by day
 WITH visit_by_date AS (
 	SELECT	date,
 		EXTRACT(DOW FROM date) AS day,
@@ -47,7 +50,7 @@ FROM visit_by_date
 GROUP BY day
 ORDER BY totalvisits;
 
-# Visits by month
+-- Visits by month
 WITH visit_by_date AS (
 	SELECT	date,
 		EXTRACT(DOW FROM date) AS day,
@@ -61,6 +64,7 @@ SELECT	month,
 FROM visit_by_date
 GROUP BY month
 ORDER BY totalvisits;
+```
 
 Answer:
 Weekdays get over 50% more traffic than weekends. Saturdays have the fewest visits and Wednesdays have the most.
@@ -74,6 +78,7 @@ The month with the most visits is August with over twice as many visits as Octob
 Question 3: What percentage of the site traffic is repeat visitors? 
 
 SQL Queries: 
+```SQL
 WITH repeat_visitors AS (
 		SELECT 	fullvisitorid,
 				COUNT(DISTINCT visitid) AS visits
@@ -92,11 +97,10 @@ WITH repeat_visitors AS (
 SELECT (SELECT COUNT(*) FROM repeat_visitors) AS repeat,
 (SELECT COUNT(*) FROM one_time_visitors) AS onetime,
 ((SELECT COUNT(*) FROM repeat_visitors)+(SELECT COUNT(*) FROM one_time_visitors)) AS total
+```
 
 Answer:
 Repeat visitors make up 1.89% of traffic.
-
-![Alt text](q2-3.png)
 
 Question 4: 
 
