@@ -9,7 +9,7 @@ What issues will you address by cleaning the data?
 8. In all_sessions table: productrefundamount, itemquantity, itemrevenue, and searchkeyword columns are all NULL. The currencycode is only USD. Delete these columns.
 9. In all_sessions table: Convert totaltransactionrevenue, productprice, productrevenue, transactionrevenue to dollars
 10. In all_sessions table: 24 rows have no country and 8656 rows have no city. Change all these values to 'unknown'
-
+11. In all_sessions table: v2productcategories is inconsistent. Consolidate and sort products
 
 
 Queries:
@@ -83,3 +83,35 @@ UPDATE all_sessions_clean
 SET city = 'unknown'
 WHERE city = '(not set)'
 OR city = 'not available in demo dataset';
+
+11.
+UPDATE all_sessions_clean SET v2productcategory = 
+	CASE 
+		WHEN v2productcategory ILIKE '%apparel%' THEN 'Apparel'
+		WHEN v2productcategory ILIKE '%electronics%' THEN 'Electronics'
+		WHEN v2productcategory ILIKE '%drinkware%' THEN 'Drinkware'
+		WHEN v2productcategory ILIKE '%bags%' THEN 'Bags'
+        WHEN v2productcategory ILIKE '%pet%' THEN 'Pet'
+        WHEN v2productcategory ILIKE '%houseware%' THEN 'Housewares'
+        WHEN v2productcategory ILIKE '%sport%' THEN 'Sports & Fitness'
+		WHEN v2productname ILIKE '%bottle%' OR v2productname ILIKE '%mug%' OR v2productname ILIKE '%tumbler%' THEN 'Drinkware'
+		WHEN v2productname ILIKE '%pen%' THEN 'Writing Instruments' 
+		WHEN v2productname ILIKE '%journal%' OR v2productname ILIKE '%notebook%' THEN 'Notebooks & Journals'
+		WHEN v2productname ILIKE '%bag%' OR v2productname ILIKE '%backpack%' OR v2productname ILIKE '%rucksack%' OR v2productname ILIKE '%tote%' THEN 'Bags'
+		WHEN v2productname ILIKE '%sticker%' OR v2productname ILIKE '%decal%' THEN 'Stickers'
+		WHEN v2productname ILIKE '%cap%' OR v2productname ILIKE '%hat%' THEN 'Apparel'
+		WHEN v2productname ILIKE '%Men''s%' OR v2productname ILIKE '%toddler%' OR v2productname ILIKE '%infant%' THEN 'Apparel'
+		WHEN v2productname ILIKE '%nest%' THEN 'Nest'
+		WHEN v2productname ILIKE '%socks%' OR v2productname ILIKE '%hoodie%' OR v2productname ILIKE '%onesie%' OR v2productname ILIKE '%shirt%' OR v2productname ILIKE '%tee%' THEN 'Apparel'
+		WHEN v2productname ILIKE '%speaker%' OR v2productname ILIKE '%headphone%' THEN 'Electronics'
+        WHEN v2productname ILIKE '%charger%' OR v2productname ILIKE '%flashlight%' OR v2productname ILIKE '%power%' THEN 'Electronics'
+        WHEN v2productname ILIKE '%dog%' OR v2productname ILIKE '%pet%' THEN 'Pet'
+		WHEN v2productname ILIKE '%luggage%' OR v2productname ILIKE '%lunch kit%' THEN 'Housewares'
+        WHEN v2productname ILIKE '%sunglas%' THEN 'Apparel'
+		WHEN v2productname ILIKE '%ball%' OR v2productname ILIKE '%yoga%' THEN 'Sports & Fitness'
+        WHEN v2productname ILIKE '%windup%' THEN 'Accessories'
+		WHEN v2productname ILIKE '%selfie%' THEN 'Accessories'
+   		WHEN v2productname ILIKE '%holder%' OR v2productname ILIKE '%stand%' OR v2productname ILIKE '%mount%' THEN 'Accessories'
+
+		ELSE v2productcategory
+	END
