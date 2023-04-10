@@ -10,7 +10,7 @@ SELECT city,
 		SUM(totaltransactionrevenue)
 FROM all_sessions_clean
 WHERE totaltransactionrevenue IS NOT NULL AND 
-CITY != 'unknown'
+city != 'unknown'
 GROUP BY city
 ORDER BY SUM(totaltransactionrevenue) DESC
 LIMIT 3;
@@ -227,7 +227,7 @@ ORDER BY SUM(totaltransactionrevenue) DESC;
 
 
 Answer:
-
+The majority of revenue is coming from cities in the US. The rest of the revenue is from cities in Israel, Australia, Canada and Switzerland. The business could use this information to consider whether or not to focus efforts on expanding their reach in other cities and countries, perhaps with different products that may be more popular among those populations or additional language/currency options.
 
 
 
