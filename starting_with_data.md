@@ -66,12 +66,30 @@ Weekdays get over 50% more traffic than weekends. Saturdays have the fewest visi
 The month with the most visits is August with over twice as many visits as October, the month with the least traffic. September and August stick out as having significantly more traffic than the other months. With only one year's data, it is difficult to generalize this pattern beyond the given year.
 
 
-Question 3: 
+Question 3: What percentage of the site traffic is repeat visitors? 
 
-SQL Queries:
+SQL Queries: 
+WITH repeat_visitors AS (
+		SELECT 	fullvisitorid,
+				COUNT(DISTINCT visitid) AS visits
+		FROM all_sessions_clean
+		GROUP BY fullvisitorid
+		HAVING COUNT(DISTINCT visitid) > 1
+	),
+	one_time_visitors AS (
+		SELECT 	fullvisitorid,
+				COUNT(DISTINCT visitid) AS visits
+	FROM all_sessions_clean
+	GROUP BY fullvisitorid
+	HAVING COUNT(DISTINCT visitid) = 1
+	)
+
+SELECT (SELECT COUNT(*) FROM repeat_visitors) AS repeat,
+(SELECT COUNT(*) FROM one_time_visitors) AS onetime,
+((SELECT COUNT(*) FROM repeat_visitors)+(SELECT COUNT(*) FROM one_time_visitors)) AS total
 
 Answer:
-
+Repeat visitors make up 1.89% of traffic.
 
 
 Question 4: 
