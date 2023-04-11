@@ -15,6 +15,7 @@ What issues will you address by cleaning the data?
 Queries:
 Below, provide the SQL queries you used to clean your data.
 1.
+```SQL
 UPDATE products_clean
 SET sentimentscore = 
 	(SELECT ROUND(AVG(sentimentscore)::numeric, 1) FROM products_clean)
@@ -24,30 +25,39 @@ UPDATE products_clean
 SET sentimentmagnitude = 
 	(SELECT ROUND(AVG(sentimentmagnitude)::numeric, 1) FROM products_clean)
 	WHERE sentimentmagnitude IS NULL;
-
+```
 2.
+```SQL
 CREATE TABLE sales_by_sku_clean AS (
 	SELECT *
 	FROM sales_by_sku
 	WHERE productsku IN (SELECT sku FROM products_clean);
 )
-
+```
 3.
+```SQL
 DROP TABLE sales_by_sku_clean;
+```
 
 4.
+```SQL
 CREATE TABLE analytics_clean AS (SELECT DISTINCT * FROM analytics);
-
+```
 5.
+```SQL
 ALTER TABLE analytics_clean
 DROP COLUMN userid;
+```
 
 6.
+```SQL
 UPDATE analytics_clean SET
 	unit_price = (unit_price/1000000),
 	revenue = (revenue/1000000);
+```
 
 7.
+```SQL
 UPDATE analytics_clean SET units_sold = 0
 WHERE units_sold IS NULL;
 
@@ -58,23 +68,29 @@ UPDATE analytics_clean SET
 UPDATE analytics_clean SET
 	revenue = 0
 	WHERE revenue IS NULL;
+```
 
 8.
+```SQL
 ALTER TABLE all_sessions_clean
 	DROP COLUMN productrefundamount,
 	DROP COLUMN itemquantity,
 	DROP COLUMN itemrevenue,
     DROP COLUMN searchkeyword,
     DROP COLUMN currencycode;
+```
 
 9.
+```SQL
 UPDATE all_sessions_clean SET
 	totaltransactionrevenue = totaltransactionrevenue/1000000,
 	productprice = productprice/1000000,
 	productrevenue = productrevenue/1000000,
 	transactionrevenue = transactionrevenue/1000000;
+```
 
 10.
+```SQL
 UPDATE all_sessions_clean
 SET country = 'unknown'
 WHERE country = '(not set)';
@@ -83,8 +99,10 @@ UPDATE all_sessions_clean
 SET city = 'unknown'
 WHERE city = '(not set)'
 OR city = 'not available in demo dataset';
+```
 
 11.
+```SQL
 UPDATE all_sessions_clean SET v2productcategory = 
 	CASE 
 		WHEN v2productcategory ILIKE '%apparel%' THEN 'Apparel'
@@ -115,3 +133,4 @@ UPDATE all_sessions_clean SET v2productcategory =
 
 		ELSE v2productcategory
 	END
+```
