@@ -1,9 +1,10 @@
 What are your risk areas? Identify and describe them.
 
-There appear to be many transactions in the analytics table that are unaccounted for on the all_sessions table. These transactions could not be linked to a country or city, therefore have been excluded from answers related to geography.
-Additionally, there were contradictions between different revenue columns that made it unclear which was the most reliable. For the sake of these questions, I used the totaltransactionrevenue column from the all_sessions table.
+There appear to be many transactions in the analytics table that are unaccounted for on the all_sessions table. These transactions could not be linked to a country or city, therefore have been excluded from answers related to geography. There are also many records in the all_sessions table that are missing location data. This means any sort of trends noted regarding sales by city or country have to be understood as an incomplete picture.
 
+Additionally, there were contradictions between different revenue columns that made it unclear which was the most reliable. For the sake of these questions, I used the totaltransactionrevenue column from the all_sessions table. Similarly, between different tables, it was unclear what the most accurate accouting of units sold. I focused on the unit_sold column from analytics and cross referenced it with all_sessions to pinpoint the transactions.
 
+Relying on any of this data is high risk. If the company would like to use any of this analysis, I would want to better understand the source of the data and clarify inconsistency before redoing my analysis.
 
 
 QA Process:
